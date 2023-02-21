@@ -1,4 +1,4 @@
-  SELECT FOOD_TYPE
+SELECT FOOD_TYPE
        , REST_ID
        , REST_NAME
        , FAVORITES
