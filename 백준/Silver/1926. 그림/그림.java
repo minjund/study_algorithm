@@ -19,46 +19,44 @@ public class Main {
         visit = new boolean[n][m];
         qu = new LinkedList<>();
         
-        dx = new int[]{1, 0, -1, 0};
-        dy = new int[]{0, 1, 0, -1};
-        
+        dx = new int[]{1, 0, -1, 0}; // 상좌하우 (x가 행 y가 열)
+        dy = new int[]{0, 1, 0, -1}; // 상좌하우
+        // 기본세팅
         for(int i=0; i<n; i++){
             st = new StringTokenizer(bf.readLine());
             for(int j=0; j<m; j++){
                 arr[i][j] = Integer.parseInt(st.nextToken());
             }
         }
-        
-        // 시작!
+        // bfs 돌리기
         int count = 0;
         int area = 0;
         int max = 0;
         for(int i=0; i<n; i++){
             for(int j=0; j<m; j++){
-                // 0이거나 방문한적이 있으면 생략.
-                if(arr[i][j] == 0 || visit[i][j]){
+                if(arr[i][j] == 0 || visit[i][j]){ //0이거나 방문기록이 있으면 = 다음차례로 넘어가 -> 1찾기
                     continue;
                 }
-                count++;    // 1이고, 방문을 하지 않았으므로 시작점이 되니까 +1
-                qu.offer(new Pair(i, j));   // 큐에 좌표를 넣어준다.
-                visit[i][j] = true;     // 방문처리!
-                area = 0;    // 0이면 그림이 끊겼으므로 area = 0!
-                while(!qu.isEmpty()){
+                count++;    
+                qu.offer(new Pair(i, j));   
+                visit[i][j] = true;     
+                area = 0;    
+                while(!qu.isEmpty()){ // 큐스택이 없을때까지
                     Pair p = qu.poll();
-                    area++; // 넓이 +1
-                    for(int k = 0; k < 4; k++){
-                        int n_x = p.x + dx[k];
-                        int n_y = p.y + dy[k];
-                        if(n_x < 0 || n_x >= n || n_y < 0 || n_y >= m){
+                    area++;
+                    for(int k = 0; k < 4; k++){ //4카씩 체크
+                        int n_x = p.x + dx[k]; // 1
+                        int n_y = p.y + dy[k]; // 0
+                        if(n_x < 0 || n_x >= n || n_y < 0 || n_y >= m){ // 칸이 넘어갈경우는 패스
                             continue;
                         }
-                        if(arr[n_x][n_y] == 1 && !visit[n_x][n_y]){
-                            qu.offer(new Pair(n_x, n_y));
-                            visit[n_x][n_y] = true;
+                        if(arr[n_x][n_y] == 1 && !visit[n_x][n_y]){ // 해당 칸 방문한적이 없으면
+                            qu.offer(new Pair(n_x, n_y)); // qu에 n_x,n_y를 추가
+                            visit[n_x][n_y] = true; //방문 ture
                         }
                     }
                 }
-                if(area > max){
+                if(area > max){ // 지금 지역이 max보다 크면
                     max = area;
                 }
             }
